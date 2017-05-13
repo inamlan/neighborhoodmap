@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Riyadh's Coffee shops</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/main.css">
+
+</head>
+
+<body >
+  <div class="col-sm-3" id="sidebar-nav">
+    <h2>Riyadh's Coffee shops</h2>
+    <h4>Best Riyadh coffee shops</h4>
+    <input type="search" class="form-control" data-bind="value: query, valueUpdate: 'keyup'" placeholder="Filter markers..">
+    <br/>
+    <ul style="list-style: none" data-bind="foreach: search">
+      <li data-bind="text: name, click: $root.listViewClick"></li>
+    </ul>
+    <div id="wikitext" data-bind="template: { name: 'wiki-info-template', data: modalArticle }"></div>
+  </div>
+
+  <div class="col-sm-9" id="map"></div>
+
+  <script type="text/html" id="wiki-info-template">
+    <p data-bind="text: $data[0]"></p>
+    <p data-bind="text: $data[1]"></p>
+    <p data-bind="text: $data[2]"></p>
+  </script>
+  <script src="http://code.jquery.com/jquery-3.2.1.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/knockout/2.3.0/knockout-min.js"></script>
+  <script src="js/app.js"></script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDUDQKCny0lEmWOasM6694d7zICu0DhFCE&callback=vm.initMap" async defer onerror="googleError()"></script>
+
+</body>
+</html>
