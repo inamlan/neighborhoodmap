@@ -117,7 +117,7 @@ ViewModel.prototype.initMap = function() {
         '</h4>'+
         '<div id="bodyContent">'+
           '<p>'+
-            venue2
+            venue2 +
             '</br>'+
         '</p>'+
         '</div></div>';
