@@ -6,15 +6,44 @@ var CircleCafe  = {lat: 24.751078, lng: 46.614967};
 var TeaClub     = {lat: 24.790168, lng: 46.659007};
 
 
+function setMarkers(arrLocation)
+{
+
+    bound = new google.maps.LatLngBounds();
+    for (var i = 0 ;i < arrLocation.length ; i++) {
+        var marker = new google.maps.Marker({
+        position: {
+               "lat" : arrLocation[i].venue.location.lat,
+               "lng" : arrLocation[i].venue.location.lng
+            },
+        map: map,
+        title: arrLocation[i].venue.name,
+        animation: google.maps.Animation.DROP,
+        id : i
+        });
+    markers.push(marker);
+    bound.extend(marker.position);
+    marker.addListener('click', function() {
+        popwindow(this, infowindow,arrLocation[this.id]);
+        });
+    }
+    map.fitBounds(bound);
+
+
+}
+
+
+
+
 var ViewModel = function () {
   var self = this;
   var infowindow;
   self.locations = ko.observableArray([
     {id: 'WhiteGarden', name: 'White Garden Cafe', latlong: WhiteGarden},
-    {id: 'Acoustic', name: 'Acoustic', latlong: Acoustic},
-    {id: 'PralineCafe', name: 'Praline Cafe', latlong: PralineCafe},
-    {id: 'CircleCafe', name: 'Circle Cafe', latlong: CircleCafe},
-    {id: 'TeaClub', name: 'Tea Club', latlong: TeaClub}
+    {id: 'Acoustic', name: 'Acoustic', latlong: Acoustic, fourid:'53bef235498ef20ed9733a85'},
+    {id: 'PralineCafe', name: 'Praline Cafe', latlong: PralineCafe },
+    {id: 'CircleCafe', name: 'Circle Cafe', latlong: CircleCafe ,},
+    {id: 'TeaClub', name: 'Tea Club', latlong: TeaClub }
   ]);
 
   self.query = ko.observable('');
@@ -39,9 +68,7 @@ var ViewModel = function () {
 
 //initialize map, markers, and infowindows. markers and infowindows are tied to observed array
 ViewModel.prototype.initMap = function() {
-
   var self = this;
-
   this.map = new google.maps.Map(document.getElementById('map'), {
     center: {lat: 24.694324, lng: 46.684559},
     zoom: 12,
@@ -58,10 +85,31 @@ ViewModel.prototype.initMap = function() {
       title: v.name
     });
 
+
+
     self.locations()[i].marker = marker;
 
     self.locations()[i].marker.addListener('click', function() {
-      var contentString =
+      var venue1;
+      var venue2;
+      $.ajax({
+        url: 'https://api.foursquare.com/v2/venues/explore?ll=24.694324,46.684559&radius=100000&section=coffee&client_id=MPR1JZSCYYJSNEV5SCZEAJI25JQUBIYLZKZ4WNOMN4RQQRRE&client_secret=PEA4GZPYIFH15TVYVJXAQWUNOUMNFPNJXKCWSRCQCB2DMQ5A&v=20161016',
+        dataType: "json",
+        success: function (data) {
+          venue1=data.response.groups[0].items;
+        },
+        error: function (errorMessage) {
+            window.alert("Foursquare API is unavailable.");
+        }
+      });
+
+      for (var i = 0 ;  i < venue1.length ; i++) {
+        if (venue1[i].venue.id === self.locations()[i].fourid){
+          venue2=venue1[i].venue.rating;
+      };
+    };
+
+    var contentString =
       '<div id="content">'+
       '<div id="siteNotice">'+'</div>'+
         '<h4>'
@@ -69,27 +117,22 @@ ViewModel.prototype.initMap = function() {
         '</h4>'+
         '<div id="bodyContent">'+
           '<p>'+
-            self.locations()[i].placeDetails+
+            venue2
             '</br>'+
-            self.locations()[i].image+
         '</p>'+
         '</div></div>';
-
-
-
 
         infowindow.setContent(contentString);
         infowindow.open(map, marker);
         marker.setAnimation(google.maps.Animation.BOUNCE);
         setTimeout(function(){ marker.setAnimation(null); }, 1400);
-      });
 
     });
 
-  };
+  });
+};
 
-
-  googleError = function() {
+googleError = function() {
     window.alert("Google Maps API could not be loaded at this time");
   };
 
