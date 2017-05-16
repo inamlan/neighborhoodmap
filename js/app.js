@@ -1,16 +1,9 @@
 // google map coffee shops locations
-
-var Taw         = {lat: 24.699865, lng: 46.691330};
 var Acoustic    = {lat: 24.692975, lng: 46.674549};
 var PralineCafe = {lat: 24.702528, lng: 46.691689};
-var CItal       = {lat: 24.697178, lng: 46.685655};
-
-var WhiteGarden = {lat: 24.694324, lng: 46.684559};
-var CircleCafe  = {lat: 24.751078, lng: 46.614967};
-var TeaClub     = {lat: 24.790168, lng: 46.659007};
-
-
-
+var laduree     = {lat: 24.697599, lng: 46.683476};
+var bateel      = {lat: 24.697465, lng: 46.830429};
+var javatime    = {lat: 24.70703, lng: 46.688608};
 
 var base = [];
 var FoursquareUrl = [];
@@ -58,13 +51,11 @@ var ViewModel = function () {
   var self = this;
   var infowindow;
   self.locations = ko.observableArray([
-    {id:'Taw',          name:'Taw',                 latlong: Taw,         frating:16},
     {id:'Acoustic',     name:'Acoustic',            latlong: Acoustic,    frating:28},
     {id:'PralineCafe',  name:'Praline Cafe',        latlong: PralineCafe, frating:21},
-    {id:'CItal',        name:'Cioccolat Italiani',  latlong: CItal,       frating:5 },
-    {id:'WhiteGarden',  name:'White Garden',        latlong: WhiteGarden, frating:1 },
-    {id:'CircleCafe',   name:'Circle Cafe',         latlong: CircleCafe,  frating:2 },
-    {id:'TeaClub',      name:'Tea Club',            latlong: TeaClub,     frating:3 }
+    {id:'laduree',      name:'laduree',             latlong: laduree,     frating:1 },
+    {id:'bateel',       name:'bateel',              latlong: bateel,      frating:2 },
+    {id:'javatime',      name:'javatime',            latlong: javatime,     frating:3 }
   ]);
 
   self.query = ko.observable('');
@@ -118,7 +109,7 @@ ViewModel.prototype.initMap = function() {
         '<div id="bodyContent">'+
           '<p>'+'Foursquare Rating: '+FoursquareRating[self.locations()[i].frating]+
             '<br>'+
-            'Foursquare URL: '+FoursquareUrl[self.locations()[i].frating]+
+            'Foursquare URL: <a href="'+FoursquareUrl[self.locations()[i].frating]+'" target="_blank">'+
         '</p>'+
         '</div></div>';
 
