@@ -20,13 +20,11 @@ $.ajax({
   url: 'https://api.foursquare.com/v2/venues/explore?ll=24.694324,46.684559&radius=100000&section=coffee&client_id=MPR1JZSCYYJSNEV5SCZEAJI25JQUBIYLZKZ4WNOMN4RQQRRE&client_secret=PEA4GZPYIFH15TVYVJXAQWUNOUMNFPNJXKCWSRCQCB2DMQ5A&v=20170501',
   dataType: "json",
   success: function (data) {
-    base = data.response.groups[0].items
-    //$.each(base, function(index){
-    //  FoursquareUrl = base[index].venue.url;
-    //  FoursquareRating = base[index].venue.rating;
-//  });
+    base = data.response.groups[0].items;
+
     for (var i=0; i< base.length; i++){
       FoursquareRating[i]= base[i].venue.rating;
+      FoursquareUrl[i]= base[i].venue.url;
     }
 },
   error: function (errorMessage) {
@@ -118,9 +116,9 @@ ViewModel.prototype.initMap = function() {
           + self.locations()[i].name +
         '</h4>'+
         '<div id="bodyContent">'+
-          '<p>'+'Foursquare Rating: '+
-            FoursquareRating[self.locations()[i].frating]+
-            '</br>'+
+          '<p>'+'Foursquare Rating: '+FoursquareRating[self.locations()[i].frating]+
+            '<br>'+
+            'Foursquare URL: '+FoursquareUrl[self.locations()[i].frating]+
         '</p>'+
         '</div></div>';
 
