@@ -109,7 +109,8 @@ ViewModel.prototype.initMap = function() {
         '<div id="bodyContent">'+
           '<p>'+'Foursquare Rating: '+FoursquareRating[self.locations()[i].frating]+
             '<br>'+
-            'Foursquare URL: <a href="'+FoursquareUrl[self.locations()[i].frating]+'" target="_blank">'+
+            'Foursquare URL: '+
+            '<a href="'+FoursquareUrl[self.locations()[i].frating]+'" target="_blank">'+self.locations()[i].name+'</a>'+
         '</p>'+
         '</div></div>';
 
