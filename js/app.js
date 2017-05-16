@@ -1,6 +1,6 @@
 // google map coffee shops locations
 var Acoustic    = {lat: 24.692975, lng: 46.674549};
-var PralineCafe = {lat: 24.702528, lng: 46.691689};
+var PralineCafe = {lat: 24.809379, lng: 46.649052};
 var laduree     = {lat: 24.697599, lng: 46.683476};
 var bateel      = {lat: 24.697465, lng: 46.830429};
 var javatime    = {lat: 24.70703, lng: 46.688608};
