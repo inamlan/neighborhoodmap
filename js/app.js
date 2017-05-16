@@ -1,23 +1,33 @@
 // google map coffee shops locations
-var WhiteGarden = {lat: 24.694324, lng: 46.684559};
+
+var Taw         = {lat: 24.699865, lng: 46.691330};
 var Acoustic    = {lat: 24.692975, lng: 46.674549};
 var PralineCafe = {lat: 24.702528, lng: 46.691689};
+var CItal       = {lat: 24.697178, lng: 46.685655};
+
+var WhiteGarden = {lat: 24.694324, lng: 46.684559};
 var CircleCafe  = {lat: 24.751078, lng: 46.614967};
 var TeaClub     = {lat: 24.790168, lng: 46.659007};
+
+
+
 
 var base = [];
 var FoursquareUrl = [];
 var FoursquareRating = [];
 
 $.ajax({
-  url: 'https://api.foursquare.com/v2/venues/explore?ll=24.694324,46.684559&radius=100000&section=coffee&client_id=MPR1JZSCYYJSNEV5SCZEAJI25JQUBIYLZKZ4WNOMN4RQQRRE&client_secret=PEA4GZPYIFH15TVYVJXAQWUNOUMNFPNJXKCWSRCQCB2DMQ5A&v=20170101',
+  url: 'https://api.foursquare.com/v2/venues/explore?ll=24.694324,46.684559&radius=100000&section=coffee&client_id=MPR1JZSCYYJSNEV5SCZEAJI25JQUBIYLZKZ4WNOMN4RQQRRE&client_secret=PEA4GZPYIFH15TVYVJXAQWUNOUMNFPNJXKCWSRCQCB2DMQ5A&v=20170501',
   dataType: "json",
   success: function (data) {
     base = data.response.groups[0].items
-    $.each(base, function(index){
-      FoursquareUrl = base[index].venue.url;
-      FoursquareRating = base[index].venue.rating;
-  });
+    //$.each(base, function(index){
+    //  FoursquareUrl = base[index].venue.url;
+    //  FoursquareRating = base[index].venue.rating;
+//  });
+    for (var i=0; i< base.length; i++){
+      FoursquareRating[i]= base[i].venue.rating;
+    }
 },
   error: function (errorMessage) {
       window.alert("Foursquare API is unavailable.");
@@ -50,11 +60,13 @@ var ViewModel = function () {
   var self = this;
   var infowindow;
   self.locations = ko.observableArray([
-    {id: 'WhiteGarden', name: 'White Garden Cafe', latlong: WhiteGarden},
-    {id: 'Acoustic', name: 'Acoustic', latlong: Acoustic, fourid:'53bef235498ef20ed9733a85'},
-    {id: 'PralineCafe', name: 'Praline Cafe', latlong: PralineCafe },
-    {id: 'CircleCafe', name: 'Circle Cafe', latlong: CircleCafe ,},
-    {id: 'TeaClub', name: 'Tea Club', latlong: TeaClub }
+    {id:'Taw',          name:'Taw',                 latlong: Taw,         frating:16},
+    {id:'Acoustic',     name:'Acoustic',            latlong: Acoustic,    frating:28},
+    {id:'PralineCafe',  name:'Praline Cafe',        latlong: PralineCafe, frating:21},
+    {id:'CItal',        name:'Cioccolat Italiani',  latlong: CItal,       frating:5 },
+    {id:'WhiteGarden',  name:'White Garden',        latlong: WhiteGarden, frating:1 },
+    {id:'CircleCafe',   name:'Circle Cafe',         latlong: CircleCafe,  frating:2 },
+    {id:'TeaClub',      name:'Tea Club',            latlong: TeaClub,     frating:3 }
   ]);
 
   self.query = ko.observable('');
@@ -106,8 +118,8 @@ ViewModel.prototype.initMap = function() {
           + self.locations()[i].name +
         '</h4>'+
         '<div id="bodyContent">'+
-          '<p>'+'Foursquare Rating:'+
-            FoursquareRating+
+          '<p>'+'Foursquare Rating: '+
+            FoursquareRating[self.locations()[i].frating]+
             '</br>'+
         '</p>'+
         '</div></div>';
