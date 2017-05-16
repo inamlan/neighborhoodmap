@@ -5,60 +5,46 @@ var PralineCafe = {lat: 24.702528, lng: 46.691689};
 var CircleCafe  = {lat: 24.751078, lng: 46.614967};
 var TeaClub     = {lat: 24.790168, lng: 46.659007};
 
+var base = [];
 var FoursquareUrl = [];
 var FoursquareRating = [];
 
 $.ajax({
   url: 'https://api.foursquare.com/v2/venues/explore?ll=24.694324,46.684559&radius=100000&section=coffee&client_id=MPR1JZSCYYJSNEV5SCZEAJI25JQUBIYLZKZ4WNOMN4RQQRRE&client_secret=PEA4GZPYIFH15TVYVJXAQWUNOUMNFPNJXKCWSRCQCB2DMQ5A&v=20170101',
   dataType: "json",
-
   success: function (data) {
-
-    var base = data.response.groups[0].items
-    window.alert("foursquare data fetched successfully.");
-
+    base = data.response.groups[0].items
     $.each(base, function(index){
       FoursquareUrl = base[index].venue.url;
       FoursquareRating = base[index].venue.rating;
   });
-  //window.alert(self.FoursquareRating[1]);
-  //window.alert($.toJSON(FoursquareRating));
-  //window.alert(self.FoursquareRating.toSource());
 },
-
-error: function (errorMessage) {
+  error: function (errorMessage) {
       window.alert("Foursquare API is unavailable.");
   }
 });
 
-
-function setMarkers(arrLocation)
-{
-
-
-    bound = new google.maps.LatLngBounds();
-    for (var i = 0 ;i < arrLocation.length ; i++) {
-        var marker = new google.maps.Marker({
-        position: {
-               "lat" : arrLocation[i].venue.location.lat,
-               "lng" : arrLocation[i].venue.location.lng
-            },
-        map: map,
-        title: arrLocation[i].venue.name,
-        animation: google.maps.Animation.DROP,
-        id : i
-        });
+function setMarkers(arrLocation){
+  bound = new google.maps.LatLngBounds();
+  for (var i = 0 ;i < arrLocation.length ; i++) {
+    var marker = new google.maps.Marker({
+      position: {
+        "lat" : arrLocation[i].venue.location.lat,
+        "lng" : arrLocation[i].venue.location.lng
+      },
+      map: map,
+      title: arrLocation[i].venue.name,
+      animation: google.maps.Animation.DROP,
+      id : i
+    });
     markers.push(marker);
     bound.extend(marker.position);
     marker.addListener('click', function() {
-        popwindow(this, infowindow,arrLocation[this.id]);
-        });
-    }
-    map.fitBounds(bound);
-
-
+      popwindow(this, infowindow,arrLocation[this.id]);
+    });
+  }
+  map.fitBounds(bound);
 }
-
 
 var ViewModel = function () {
   var self = this;
@@ -110,19 +96,8 @@ ViewModel.prototype.initMap = function() {
       title: v.name
     });
 
-
-
     self.locations()[i].marker = marker;
-
     self.locations()[i].marker.addListener('click', function() {
-
-
-    //  for (var i = 0 ;  i < venue1.length ; i++) {
-    //    window.alert("Foursquare 1 API is unavailable.");
-    //    if (venue1[i].venue.id == self.locations()[i].fourid){
-    //      venue2=venue1[i].venue.rating;
-    //  }
-    //}
 
     var contentString =
       '<div id="content">'+
@@ -132,7 +107,7 @@ ViewModel.prototype.initMap = function() {
         '</h4>'+
         '<div id="bodyContent">'+
           '<p>'+'Foursquare Rating:'+
-            //this.FoursquareRating[1]+
+            FoursquareRating+
             '</br>'+
         '</p>'+
         '</div></div>';
